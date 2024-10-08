@@ -1,62 +1,62 @@
-const config = {
-  result_page: false, // After get the value from KV, if use a page to show the result.
-  theme: "", // Homepage theme, use the empty value for default theme. To use urlcool theme, please fill with "theme/urlcool" .
-  cors: true, // Allow Cross-origin resource sharing for API requests.
-  unique_link: false, // If it is true, the same long url will be shorten into the same short url
-  custom_link: true, // Allow users to customize the short url.
-  overwrite_kv: false, // Allow user to overwrite an existed key.
-  snapchat_mode: false, // The link will be distroyed after access.
-  visit_count: false, // Count visit times.
-  load_kv: false, // Load all from Cloudflare KV
-  system_type: "shorturl", // shorturl, imghost, other types {pastebin, journal}
+常量 配置= {
+  result_page : false , // 从KV中获取值后，如果使用页面来显示结果。
+  theme : "" , // 主页主题，默认主题使用空值。要使用urlcool主题，请填写“theme/urlcool”。
+  cors : true , // 允许 API 请求跨源资源共享。
+  unique_link : false , // 如果为 true，则相同的长 url 将被缩短为相同的短 url
+  custom_link : true , // 允许用户自定义短网址。
+  overwrite_kv : false , // 允许用户覆盖现有密钥。
+  snapchat_mode : false , // 访问后链接将被销毁。
+  Visit_count : false , // 计算访问次数。
+  load_kv : false , // 从 Cloudflare KV 加载所有内容
+  system_type : "shorturl" , // 短网址、imghost、其他类型 {pastebin、journal}
 }
 
-// key in protect_keylist can't read, add, del from UI and API
-const protect_keylist = [
-  "password",
+// Protect_keylist 中的密钥无法从 UI 和 API 读取、添加、删除
+常量 保护密钥列表= [
+  “密码”，
 ]
 
-let index_html = "https://crazypeace.github.io/Url-Shorten-Worker/" + config.theme + "/index.html"
-let result_html = "https://crazypeace.github.io/Url-Shorten-Worker/" + config.theme + "/result.html"
+让 index_html = “https://ddnspro.github.io/Url-Shorten-Worker/” + config。主题+ “/index.html”
+让 result_html = "https://ddnspro.github.io/Url-Shorten-Worker/" + config.主题+ “/result.html”
 
-const html404 = `<!DOCTYPE html>
+const  html404 = `<!DOCTYPE html>
   <html>
-  <body>
-    <h1>404 Not Found.</h1>
-    <p>The url you visit is not found.</p>
-    <p> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </p>
-  </body>
+  <正文>
+    <h1>404 未找到。</h1>
+    <p>找不到您访问的网址。</p>
+    <p> <a href="https://github.com/ddnspro/Url-Shorten-Worker/" target="_self">在 GitHub 上分叉</a> </p>
+  </正文>
   </html>`
 
-let response_header = {
-  "Content-type": "text/html;charset=UTF-8;application/json",
+让 response_header = {
+  "内容类型" : "text/html;charset=UTF-8;application/json" ,
 }
 
-if (config.cors) {
-  response_header = {
-    "Content-type": "text/html;charset=UTF-8;application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST",
-    "Access-Control-Allow-Headers": "Content-Type",
+if  ( config.cors ) {​ 
+  响应头 = {
+    "内容类型" : "text/html;charset=UTF-8;application/json" ,
+    “访问控制允许来源”：“*”，
+    “访问控制允许方法”：“POST”，
+    “访问控制允许标头”：“内容类型”，
   }
 }
 
-function base64ToBlob(base64String) {
-  var parts = base64String.split(';base64,');
-  var contentType = parts[0].split(':')[1];
-  var raw = atob(parts[1]);
-  var rawLength = raw.length;
-  var uInt8Array = new Uint8Array(rawLength);
-  for (var i = 0; i < rawLength; ++i) {
-    uInt8Array[i] = raw.charCodeAt(i);
+函数 base64ToBlob （base64String ） {
+  var  parts = base64String.分割（'；base64，' ）；
+  var  contentType = 部分[ 0 ]。分割（'：' ）[ 1 ]；
+  var   raw = atob（部分[  1  ]）；
+  var  rawLength = 原始长度。长度;
+  var   uInt8Array = new Uint8Array ( rawLength ) ;
+  for   (  var   i = 0 ; i < rawLength; ++i )  {
+    uInt8Array [ i ] = 原始。charCodeAt ( i ) ;
   }
-  return new Blob([uInt8Array], { type: contentType });
+  返回 新的Blob ( [ uInt8Array ] , {  type : contentType } ) ;
 }
 
-async function randomString(len) {
-  len = len || 6;
+异步 函数 randomString ( len )  {
+  仅=仅|| 6 ;
   let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /*去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1 *** Easily confused characters removed */
-  let maxPos = chars.length;
+  让 maxPos = 字符。长度;
   let result = '';
   for (i = 0; i < len; i++) {
     result += chars.charAt(Math.floor(Math.random() * maxPos));
@@ -294,7 +294,7 @@ async function handleRequest(request) {
   // 如果path为空, 即直接访问本worker
   // If visit this worker directly (no path)
   if (!path) {
-    return Response.redirect("https://zelikk.blogspot.com/search/label/Url-Shorten-Worker", 302)
+    return Response.redirect("https://aliyun.kk8i.cn/", 302)
     /* new Response(html404, {
       headers: response_header,
       status: 404
